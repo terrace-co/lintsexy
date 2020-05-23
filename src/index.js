@@ -9,6 +9,8 @@ const { version } = require('../package.json');
 
 const argv = require('minimist')(process.argv.slice(2));
 
+const VERBOSE = argv.verbose || argv.v;
+
 (function stats() {
   console.log(
     chalk.blue(figlet.textSync('lintsexy', { horizontalLayout: 'fitted' }))
@@ -55,7 +57,9 @@ function maybeExpandTarget(target) {
 const targets = locateTargets().filter((file) => {
   const isJS = path.extname(file) == '.js';
   if (!isJS) {
-    console.log(chalk.dim(`Skipping ${file}`));
+    if (VERBOSE) {
+      console.info(chalk.dim(`Skipping ${file}`));
+    }
   }
   return isJS;
 });
@@ -66,7 +70,9 @@ if (targets.length == 0) {
 }
 
 for (const file of targets) {
-  console.log(`Linting: ${file}`);
+  if (VERBOSE) {
+    console.info(`Linting: ${file}`);
+  }
   const ast = babel.parse(fs.readFileSync(file, { encoding: 'UTF-8' }), {
     tokens: true,
   });
