@@ -1,5 +1,6 @@
 const babel = require('@babel/parser');
 const chalk = require('chalk');
+const clui = require('clui');
 const figlet = require('figlet');
 const fs = require('fs');
 const path = require('path');
@@ -8,14 +9,25 @@ const { version } = require('../package.json');
 
 const argv = require('minimist')(process.argv.slice(2));
 
-console.log(
-  chalk.blue(figlet.textSync('lintsexy', { horizontalLayout: 'fitted' }))
-);
+(function stats() {
+  console.log(
+    chalk.blue(figlet.textSync('lintsexy', { horizontalLayout: 'fitted' }))
+  );
 
-console.log();
-console.log(`Version: ${version}`);
-console.log('Parser: @babel/parse');
-console.log('Author: Hunter Larco');
+  const STATS = {
+    Version: version,
+    Parser: '@babel/parse',
+    Author: 'Hunter Larco',
+  };
+
+  for (const [label, value] of Object.entries(STATS)) {
+    new clui.Line()
+      .column(chalk.cyan(`  ${label}`), 15)
+      .column(value)
+      .output();
+  }
+})();
+
 console.log();
 
 function locateTargets() {
