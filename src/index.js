@@ -37,7 +37,7 @@ function locateTargets() {
 
 function maybeExpandTarget(target) {
   if (!fs.existsSync(target)) {
-    console.log(chalk.red(`Invalid target: ${target} does not exist.`));
+    console.error(chalk.red(`Invalid target: ${target} does not exist.`));
     process.exit(1);
   }
 
@@ -61,7 +61,7 @@ const targets = locateTargets().filter((file) => {
 });
 
 if (targets.length == 0) {
-  console.log(chalk.red('No files identified for linting'));
+  console.error(chalk.red('No files identified for linting'));
   process.exit(1);
 }
 
